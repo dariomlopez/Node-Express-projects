@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const Products = require("../model/product.model");
+
 const { faker } = require("@faker-js/faker");
+const Products = require("../model/product.model");
 
 router.get("/products", (request, response) => {
   response.send("I am Router");
@@ -17,7 +18,11 @@ router.post("/products", async (request, response) => {
     price: faker.commerce.price(),
     inStock: faker.datatype.boolean()
   })
-  response.status(201)
+  response.status(201).json({
+    ok: true,
+    status: 201,
+    message: "Product created successfully"
+  })
 });
 
 router.put("/products", (request, response) => {
