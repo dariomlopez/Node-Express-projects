@@ -3,6 +3,7 @@ const router = require("express").Router();
 const { faker } = require("@faker-js/faker");
 const Products = require("../model/product.model");
 
+/**Get endpoint method to get all the products */
 router.get("/products", async (request, response) => {
   const products = await Products.findAll();
     response.status(200).json({
@@ -12,6 +13,7 @@ router.get("/products", async (request, response) => {
     });
 });
 
+/**Get endpoint method to get one product by id */
 router.get("/products/:id", async (request, response) => {
   const id = request.params.id;
     const product = await Products.findOne({
@@ -26,10 +28,12 @@ router.get("/products/:id", async (request, response) => {
     });
 });
 
+/**Post method endpoint to create a new product */
 router.post("/products", async (request, response) => {
   const dataProducts = request.body;
   await Products.sync();
   const createProduct = await Products.create({
+    /**With faker we can create a fake product in our database */
     productName: faker.commerce.product(),
     price: faker.commerce.price(),
     inStock: faker.datatype.boolean()
@@ -41,6 +45,7 @@ router.post("/products", async (request, response) => {
   })
 });
 
+/**Put endpoint method to update data in one product of our database */
 router.put("/products/:id", async (request, response) => {
   const id = request.params.id;
     const dataProducts = request.body;
@@ -56,13 +61,14 @@ router.put("/products/:id", async (request, response) => {
             },
         }
     );
-    res.status(200).json({
+    response.status(200).json({
         ok: true,
         status: 200,
         body: updateProduct,
     });
 });
 
+/**Delete endpoint method to delete one product by id */
 router.delete("/products", async (request, response) => {
   const id = request.params.id;
     const deleteProduct = await Products.destroy({
@@ -70,7 +76,7 @@ router.delete("/products", async (request, response) => {
             id: id,
         },
     });
-    res.status(200).json({
+    response.status(200).json({
         ok: true,
         status: 204,
         body: deleteProduct,

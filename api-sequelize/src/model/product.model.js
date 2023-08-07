@@ -3,17 +3,18 @@ const { Sequelize, DataTypes, Model } = require("sequelize");
 
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+  /**Using dotenv to protect data */
+  process.env.DB_NAME,    //database name
+  process.env.DB_USER,    //database user
+  process.env.DB_PASS,    //database password
   {
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST,    //for example localhost
     dialect: "mysql",
   }
 );
 
 class Product extends Model {};
-
+/** Defining the datatypes of our products with sequelize models */
 Product.init({
   productName: {
     type: DataTypes.STRING,
