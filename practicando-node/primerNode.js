@@ -10,7 +10,7 @@ host = "localhost";
 expressApp.use(express.json());
 expressApp.use(express.text());
 
-/** Detalles de la cuenta a partir de identificador */
+/** Detalles de la cuenta a partir de identificador guid */
 expressApp.get("/account/:guid", (request, response) => {
   const { guid } = request.params;
   const user = usersDatabase.find(user => user.guid === guid
@@ -24,18 +24,40 @@ expressApp.get("/account/:guid", (request, response) => {
 
 /** Crear una cuenta nueva */
 expressApp.post("/account", (request, response) => {
+  const {guid, name} = request.body;
+
+  if(!name || !guid) {
+    response.status(400).send();
+  }
+
+  const user = usersDatabase.find(user => user.guid === guid);
+  if (user) {
+    return response.status(409).send();
+  } else {
+    usersDatabase.push({
+      guid,
+      name,
+    });
+    return response.send();
+  }
 
 });
 
 /** Actualizar una cuenta */
 expressApp.patch("/account/:guid", (request, response) => {
   const { guid } = request.params;
+  const { name } = request.body;
+  if(!name) {
+    return response.status(400).send();
+  }
+
   const user = usersDatabase.find(user => user.guid === guid
   );
   if (!user) {
     response.status(404).send();
   } else {
-  response.send(user);
+    user.name = name;
+    return response.send(user);
   }
 });
 
