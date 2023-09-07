@@ -11,25 +11,45 @@ expressApp.use(express.json());
 expressApp.use(express.text());
 
 /** Detalles de la cuenta a partir de identificador */
-expressApp.get("/account/:account_id", (request, response) => {
-  request.params.account_id;
-  response.send();
+expressApp.get("/account/:guid", (request, response) => {
+  const { guid } = request.params;
+  const user = usersDatabase.find(user => user.guid === guid
+  );
+  if (!user) {
+    return response.status(404).send();
+  } else {
+  response.send(user);
+  }
 });
 
 /** Crear una cuenta nueva */
 expressApp.post("/account", (request, response) => {
 
-})
+});
 
 /** Actualizar una cuenta */
-expressApp.patch("/account", (request, response) => {
-
-})
+expressApp.patch("/account/:guid", (request, response) => {
+  const { guid } = request.params;
+  const user = usersDatabase.find(user => user.guid === guid
+  );
+  if (!user) {
+    response.status(404).send();
+  } else {
+  response.send(user);
+  }
+});
 
 /** Eliminar cuenta */
-expressApp.delete("/account", (request, response) => {
-
-})
+expressApp.delete("/account/:guid", (request, response) => {
+  const { guid } = request.params;
+  const userIndex = usersDatabase.findIndex(user => user.guid === guid
+  );
+  if (userIndex === -1) {
+    return response.status(404).send();
+  } else {
+  usersDatabase.splice(userIndex, 1);
+  }
+});
 
 
 
