@@ -5,4 +5,7 @@ import express from "express"
 
 const app = express()
 
-port = app.listen(3000)
+app.listen(3000, () => {
+  let port = 3000
+  console.log(`Server on: http://localhost:${port}`)
+})
