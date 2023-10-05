@@ -1,11 +1,11 @@
 //Following this video -->  
 //https://www.youtube.com/watch?v=NmkY4JgS21A
 
-import express from "express"
+import express from "express";
+import morgan from "morgan";
 
-const app = express()
+const app = express();
 
-app.listen(3000, () => {
-  let port = 3000
-  console.log(`Server on: http://localhost:${port}`)
-})
+app.use(morgan("dev"));
+
+export default app;
